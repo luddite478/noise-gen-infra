@@ -1,0 +1,26 @@
+# .gitignore
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+# learn/data/*
+# !learn/data/
+.env
+venv/
+secrets
+bin
+lib
+lib64
+share
+
+include/
+
+learn/data
+state/audio-table.csv
+cluster/.cluster.local.env
+cluster/prefect/prefect-worker/api-key.yaml
+cluster/prefect/prefect-worker/values.yaml
+cluster/coredns
+cluster/harbor/secrets
+cluster/metallb
