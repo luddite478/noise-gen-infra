@@ -45,6 +45,11 @@ cd prefect/prefect-worker
 ./setup.sh
 cd -
 
+# setup minio
+cd minio
+./setup.sh
+cd -
+
 # setup mlflow
 cd mlflow
 ./setup.sh
