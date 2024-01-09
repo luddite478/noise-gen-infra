@@ -1,36 +1,54 @@
 #!/bin/bash
 set -e
-# rm possible \r char in .env
-tr -d '\r' < .cluster.local.env > .cluster.local.env.new
-mv .cluster.local.env.new .cluster.local.env
-source .cluster.local.env
-# # export LOCAL_ENV_FILE_ABS_PATH="$(pwd)/.cluster.local.env.new"
+
+source ../bin/activate
+
+# fix line endings (windows/linux issue)
+dos2unix secrets/.cluster.local.env
+
+# export all env vars
+set -a
+source secrets/.cluster.local.env
+set +a
+
+cd scripts
 
 # upload cluster config
-./scripts/upload_cluster_config.sh
+./upload_cluster_config.sh
 
 # create cluster
-./scripts/create_cluster.sh
+./create_cluster.sh
 
 # download k8s config
-./scripts/download_kubeconf.sh
+./download_kubeconf.sh
 
 # modify kubeconfig
-source ../bin/activate    
 pip install pyyaml python-dotenv > /dev/null
-python ./scripts/modify_kubeconfig.py
+python modify_kubeconfig.py
 
 # merge kubeconfigs
-./scripts/merge_kubeconfs.sh
+./merge_kubeconfs.sh
+chmod go-r ~/.kube/config
+
+cd -
 
 # verify cluster access
 kubectl get namespace
 
-#setup ingress
-./ingress/setup.sh
+# setup ingress
+cd ingress
+./setup.sh
+cd -
 
-#setup prefect-worker
-./prefect/prefect-worker/setup.sh
+# setup prefect-worker
+cd prefect/prefect-worker
+./setup.sh
+cd -
+
+# setup mlflow
+cd mlflow
+./setup.sh
+cd -
 
 
 

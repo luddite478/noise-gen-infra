@@ -13,6 +13,10 @@ import uuid
 
 env = dotenv_values('secrets/.env')
 
+# google_api_token = JSON.load("google-api-token")
+# google_oauth_secret = JSON.load("google-oauth-secret")
+# google_service_account_key = JSON.load("google-service-account-key")
+
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SPREADSHEET_ID = env['GOOGLE_NOISE_SPREADSHEET']
 SPREADSHEET_RANGE = 'A1:B1000'

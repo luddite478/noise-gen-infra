@@ -26,5 +26,5 @@ nodes:
 #    protocol: UDP
 #    listenAddress: "0.0.0.0"
   extraMounts:
-  - hostPath: D:/noise-learn/data
+  - hostPath: D:/noise-gen/data
     containerPath: /volume-data
