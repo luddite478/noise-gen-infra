@@ -22,10 +22,10 @@ spec:
       - name: minio
         image: minio/minio:latest
         args:
-        - server
-        - /storage
-        - --console-address
-        - 10000
+        - "server"
+        - "/storage"
+        - "--console-address"
+        - ":10000"
         env:
         - name: MINIO_ACCESS_KEY
           value: "minio"
@@ -33,6 +33,7 @@ spec:
           value: "minio123"
         ports:
           - containerPort: 9000
+          - containerPort: 10000
         volumeMounts:
         - name: storage
           mountPath: "/storage"

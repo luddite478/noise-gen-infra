@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-mlflow-bucket
+  namespace: minio
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-mlflow-bucket
+        image: minio/mc
+        command: ['sh', '-c', 'until mc alias set minio http://minio:9000 minio minio123 && (mc ls minio/mlflow || mc mb minio/mlflow); do echo waiting for minio; sleep 2; done;']
+      restartPolicy: OnFailure

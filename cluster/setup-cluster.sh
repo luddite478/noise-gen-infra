@@ -13,7 +13,7 @@ set +a
 
 cd scripts
 
-# upload cluster config
+# upload kind cluster config
 ./upload_cluster_config.sh
 
 # create cluster
