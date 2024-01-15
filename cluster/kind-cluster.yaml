@@ -26,5 +26,7 @@ nodes:
 #    protocol: UDP
 #    listenAddress: "0.0.0.0"
   extraMounts:
-  - hostPath: D:/noise-gen/data
+  - hostPath: D:/projects/noise-gen/cluster-data/custom-volumes
     containerPath: /volume-data
+  - hostPath: D:/noise-gen/local-path-provisioner-default
+    containerPath: /var/local-path-provisioner

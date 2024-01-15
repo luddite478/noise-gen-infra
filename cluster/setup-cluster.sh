@@ -28,20 +28,19 @@ python modify_kubeconfig.py
 
 # merge kubeconfigs
 ./merge_kubeconfs.sh
-chmod go-r ~/.kube/config
 
 cd -
 
 # verify cluster access
 kubectl get namespace
 
-# setup ingress
-cd ingress
-./setup.sh
+# create default volume
+cd volumes
+kubectl apply -f volume.yaml
 cd -
 
-# setup prefect-worker
-cd prefect/prefect-worker
+# setup ingress
+cd ingress
 ./setup.sh
 cd -
 
@@ -50,8 +49,18 @@ cd minio
 ./setup.sh
 cd -
 
+# setup postgres
+cd postgres
+./setup.sh
+cd -
+
 # setup mlflow
 cd mlflow
+./setup.sh
+cd -
+
+# setup prefect-worker
+cd prefect/prefect-worker
 ./setup.sh
 cd -
 

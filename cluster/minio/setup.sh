@@ -1,3 +1,5 @@
+set -e
+
 kubectl create ns minio
 kubectl apply -f volume.yaml
 kubectl apply -f deployment.yaml

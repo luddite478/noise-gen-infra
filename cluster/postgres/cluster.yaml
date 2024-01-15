@@ -1,0 +1,56 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: cluster-cnpg
+  namespace: db
+spec:
+  description: "Cluster CNPG"
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.4
+  instances: 3
+  startDelay: 300
+  stopDelay: 300
+  primaryUpdateStrategy: unsupervised
+
+  postgresql:
+    parameters:
+      shared_buffers: 256MB
+      pg_stat_statements.max: '10000'
+      pg_stat_statements.track: all
+      auto_explain.log_min_duration: '10s'
+    pg_hba:
+      - host all all 10.244.0.0/16 md5
+
+  bootstrap:
+    initdb:
+      database: $POSTGRES_DB
+      owner: $POSTGRES_USER
+      secret:
+        name: cluster-user
+
+  superuserSecret:
+    name: cluster-superuser
+
+  storage:
+    storageClass: standard
+    size: 1Gi
+
+  backup:
+    barmanObjectStore:
+      destinationPath: s3://postgres-backup/
+      endpointURL: http://minio.minio:9000
+      s3Credentials:
+        accessKeyId:
+          name: minio-backup-creds
+          key: $S3_ACCESS_KEY_BASE64
+        secretAccessKey:
+          name: minio-backup-creds
+          key: $S3_SECRET_KEY_BASE64
+      wal:
+        compression: gzip
+        encryption: AES256
+      data:
+        compression: gzip
+        encryption: AES256
+        immediateCheckpoint: false
+        jobs: 2
+    retentionPolicy: "30d"
